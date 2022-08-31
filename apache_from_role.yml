@@ -1,0 +1,8 @@
+---
+- hosts: webservers
+  become: yes
+  gather_facts: yes
+  roles:
+  - apache.role
+  tasks:
+  - debug: msg="apache installed from role"

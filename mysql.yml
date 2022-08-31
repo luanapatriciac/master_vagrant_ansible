@@ -1,0 +1,42 @@
+---
+- name: MySQL installed
+  hosts: dbservers
+  become: yes
+
+  tasks:
+    - name: install mysql
+      apt: 
+        name: mysql-server
+        update_cache: yes
+        state: present
+ 
+    - name: install python3-mysql for mysql-user module
+      apt:
+        name: python3-mysqldb
+        update_cache: yes
+        state: present
+
+
+    - name: mysql server started and enabled
+      systemd:
+        name: mysql
+        state: started
+        enabled: yes
+
+    - name: user admin created
+      mysql_user:
+        name: admin
+        password: password
+        priv: "*.*:ALL,GRANT"
+        login_user: root
+        login_password: password
+        check_implicit_admin: yes
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+
+    - name: db sitedb present
+      mysql_db:
+        name: sitedb
+        login_user: root
+        login_password: password
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+

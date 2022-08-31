@@ -1,0 +1,15 @@
+---
+# tasks file for apache.role
+- include: install.yml
+  when: ansible_os_family | lower == "redhat"
+
+- name: Copy httpd configuration file
+  copy: src=files/httpd.conf dest=/etc/httpd/conf/httpd.conf
+  notify:
+  - restart apache
+
+- name: Copy index.html file
+  template: src=templates/index.html.j2 dest=/var/www/html/index.html
+  
+- name: Start and Enable httpd service
+  service: name=httpd state=restarted enabled=yes

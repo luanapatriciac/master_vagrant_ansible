@@ -1,0 +1,10 @@
+---
+- hosts: dbservers
+  become: yes
+  tasks:
+  - name: package installed
+    apt: name=mysql-server state=latest update_cache=yes
+    register: install_result
+
+  - name: show install_result
+    debug: var=install_result

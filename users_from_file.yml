@@ -1,0 +1,12 @@
+---
+- hosts: all
+  become: yes
+  vars_files:
+  - vars/admin.yml
+  tasks:
+  - name: user created
+    user:
+      name: "{{user}}"
+      group: "{{group}}"
+      home: "{{homedir}}"
+      shell: "{{shell}}"
